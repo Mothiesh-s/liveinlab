@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techno Slot Seeker</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #3b0a0a, #1e1e1e);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+        header {
+            background: rgba(255, 0, 0, 0.3);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 2.5rem;
+            text-shadow: 3px 3px 10px rgba(255, 0, 0, 0.8);
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.5);
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 40px;
+            width: 90%;
+            flex-wrap: wrap;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.5);
+            padding: 25px;
+            flex: 1 1 45%;
+            max-width: 450px;
+            text-align: center;
+            transform: perspective(500px) rotateX(5deg);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .section:hover {
+            transform: perspective(500px) rotateX(0deg) scale(1.05);
+            background: rgba(255, 0, 0, 0.3);
+        }
+        .video img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.5);
+        }
+        button {
+            background: linear-gradient(135deg, #ff3131, #990000);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.5);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #ff6161, #cc0000);
+            transform: scale(1.1);
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: white;
+        }
+        .slogan {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 3px 3px 10px rgba(255, 0, 0, 0.8);
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>Techno Slot Seeker</header>
+    <div class="slogan">
+        <h2>Effortless Parking. Anytime, Anywhere!</h2>
+    </div>
+    <div class="container">
+        <div class="section video">
+            <h3>Live Video Feed</h3>
+            <img src="/video_feed" alt="Live Video Feed">
+        </div>
+        <div class="section">
+            <h3>Manage Parking Slots</h3>
+            <form id="bookingForm">
+                <input type="text" id="name" placeholder="Enter your name" required>
+                <input type="number" id="hours" placeholder="Enter number of hours" required>
+                <button type="submit">Book Slot</button>
+                <button type="button" id="unbookButton">Unbook Slot</button>
+            </form>
+            <div class="stats">
+                <h4>Available Slots: <span id="available-slots"></span></h4>
+                <h4>Booked Names: <span id="booked-names"></span></h4>
+                <h4>Booking Details: <span id="booking-details"></span></h4>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function fetchStats() {
+            const response = await fetch('/get_stats');
+            const data = await response.json();
+            document.getElementById('available-slots').textContent = data.available_slots;
+            document.getElementById('booked-names').textContent = data.booked_slots.map(slot => slot.name).join(', ');
+
+            let bookingDetails = '';
+            data.booking_details.forEach((booking, index) => {
+                bookingDetails += `<br>Booking #${index + 1}: ${booking.name} - From ${booking.booking_time} to ${booking.end_time}`;
+            });
+            document.getElementById('booking-details').innerHTML = bookingDetails || 'No bookings yet';
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const hours = document.getElementById('hours').value;
+            const response = await fetch('/book_slot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, hours })
+            });
+            const data = await response.json();
+            alert(data.message);
+            fetchStats();
+        });
+
+        document.getElementById('unbookButton').addEventListener('click', async () => {
+            const name = document.getElementById('name').value;
+            const response = await fetch('/unbook_slot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+            const data = await response.json();
+            alert(data.message);
+            fetchStats();
+        });
+
+        fetchStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Slot Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2a2d3e, #3b3e54);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+        .card {
+            background: #323544;
+            border-radius: 12px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+            margin: 15px;
+        }
+        input, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+        input {
+            background: #454857;
+            color: #fff;
+        }
+        button {
+            background: linear-gradient(145deg, #ff5733, #c70039);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 3px 3px 10px rgba(255, 87, 51, 0.5);
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 5px 5px 15px rgba(255, 87, 51, 0.7);
+        }
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+        .icon {
+            font-size: 22px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-parking icon"></i> Parking Slot Booking</h2>
+        <h3>Available Slots: <span id="availableSlots">{{ available_slots }}</span></h3>
+        
+        <div class="card">
+            <h3><i class="fas fa-user-plus icon"></i> Register</h3>
+            <form id="registerForm">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="text" name="phone" placeholder="Phone Number" required>
+                <input type="text" name="vehicle_type" placeholder="Vehicle Type" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-car icon"></i> Book a Slot</h3>
+            <form id="bookingForm">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Book Slot</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-times-circle icon"></i> Unbook a Slot</h3>
+            <form id="unbookingForm">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="text" name="name" placeholder="Enter your full name" required>
+                <button type="submit">Unbook Slot</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('registerForm').onsubmit = async function(event) {
+            event.preventDefault();
+            let formData = new FormData(event.target);
+            let response = await fetch('/register', { method: 'POST', body: formData });
+            let result = await response.json();
+            alert(result.message);
+        };
+
+        document.getElementById('bookingForm').onsubmit = async function(event) {
+            event.preventDefault();
+            let formData = new FormData(event.target);
+            let response = await fetch('/book_slot', { method: 'POST', body: formData });
+            let result = await response.json();
+            alert(result.message);
+            if (result.message.includes("Slot booked successfully")) {
+                location.reload();
+            }
+        };
+
+        document.getElementById('unbookingForm').onsubmit = async function(event) {
+            event.preventDefault();
+            let formData = new FormData(event.target);
+            let response = await fetch('/unbook_slot', { method: 'POST', body: formData });
+            let result = await response.json();
+            alert(result.message);
+            if (result.message.includes("Slot unbooked successfully")) {
+                location.reload();
+            }
+        };
+
+        setInterval(async () => {
+            let response = await fetch('/get_available_slots');
+            let data = await response.json();
+            document.getElementById('availableSlots').innerText = data.available_slots;
+        }, 5000);
+    </script>
+</body>
+</html>

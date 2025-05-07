@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Parking Slot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .slot-details {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Parking Slot Booking</h1>
+    <div>
+        <input type="text" id="name" placeholder="Enter your name" />
+        <button onclick="bookSlot()">Book Slot</button>
+    </div>
+    <div class="message" id="message"></div>
+    <div class="slot-details">
+        <h2>Available Slots: <span id="available-slots"></span></h2>
+        <h3>Booked Slots:</h3>
+        <ul id="booked-slots"></ul>
+    </div>
+    <script>
+        async function updateStats() {
+            const response = await fetch('/get_stats');
+            const data = await response.json();
+            document.getElementById('available-slots').textContent = data.available_slots;
+            const bookedSlotsElement = document.getElementById('booked-slots');
+            bookedSlotsElement.innerHTML = '';
+            data.booked_slots.forEach(slot => {
+                const li = document.createElement('li');
+                li.textContent = slot;
+                bookedSlotsElement.appendChild(li);
+            });
+        }
+
+        async function bookSlot() {
+            const name = document.getElementById('name').value;
+            if (!name) {
+                alert('Please enter your name!');
+                return;
+            }
+
+            const response = await fetch('/book_slot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name })
+            });
+            const data = await response.json();
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = data.message;
+
+            updateStats(); // Refresh the available slots and booked list
+        }
+
+        // Initial stats update
+        updateStats();
+    </script>
+</body>
+</html>

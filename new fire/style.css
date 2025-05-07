@@ -1,0 +1,234 @@
+/* Resetting some default browser styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+/* Navigation Styles */
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #343a40;
+}
+
+.nav-link {
+    color: #555;
+    margin: 0 0.5rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #ff8800;
+}
+
+/* Carousel Styles */
+.carousel-inner img {
+    max-height: 500px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.carousel-caption h5, .carousel-caption p {
+    color: #fff;
+}
+
+/* Cards Section */
+.cards-1 {
+    padding: 4rem 0;
+}
+
+.cards-1 h2 {
+    color: #222;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    color: #ff8800;
+    margin-bottom: 1rem;
+}
+
+/* Accordion Styles */
+.accordion-button {
+    background-color: #ff8800;
+    color: #fff;
+    border: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.accordion-item {
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.accordion-body {
+    background-color: #f8f9fa;
+}
+
+/* Invitation Section */
+.basic-3 {
+    padding: 4rem 0;
+    background-color: #fff;
+    text-align: center;
+}
+
+.basic-3 h4 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.btn-outline-lg {
+    color: #ff8800;
+    border: 2px solid #ff8800;
+    padding: 0.75rem 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-outline-lg:hover {
+    background-color: #ff8800;
+    color: #fff;
+}
+
+/* Testimonials Section */
+.testhead {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.testhead + hr {
+    margin: 1rem auto;
+    border: none;
+    height: 2px;
+    background-color: #947605;
+}
+
+p.my-4 {
+    margin-top: 2rem;
+    color: #555;
+    font-style: italic;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #222;
+    color: #fff;
+    padding: 2rem 0;
+}
+
+.footer h6 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.footer p {
+    font-size: 0.9rem;
+    color: #bbb;
+}
+
+.footer .list-unstyled a {
+    color: #ff8800;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.footer .list-unstyled a:hover {
+    text-decoration: underline;
+}
+
+.fa-stack {
+    margin-right: 1rem;
+    font-size: 1.5rem;
+}
+
+.fa-stack a {
+    color: #ff8800;
+    transition: color 0.3s;
+}
+
+.fa-stack a:hover {
+    color: #fff;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .navbar-collapse {
+        background-color: #fff;
+    }
+
+    .cards-1 {
+        padding: 2rem 0;
+    }
+
+    .carousel-inner img {
+        max-height: 300px;
+    }
+
+    .accordion-item {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer {
+        text-align: center;
+    }
+}
+/* Logout Button Styles */
+#logout {
+    background-color: #dc3545; /* Bootstrap's danger color */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#logout:hover {
+    background-color: #c82333; /* Darker red for hover effect */
+    transform: translateY(-2px); /* Slightly lift the button */
+}
+
+/* Additional styles for responsiveness if necessary */
+@media (max-width: 768px) {
+    #logout {
+        width: 100%; /* Make the logout button full width on smaller screens */
+        margin-top: 1rem; /* Add margin for spacing */
+    }
+}
+
